@@ -1,0 +1,144 @@
+﻿@model IEnumerable<ManageProject>
+@{
+    ViewData["Title"] = "Index";
+}
+@{
+    var status = Context.Request.Query["status"];
+    var pending = "text-primary";
+    var inprocess = "text-primary";
+    var completed = "text-primary";
+    var approved = "text-primary";
+    var all = "text-primary";
+
+    switch (status)
+    {
+        case "pending":
+            pending = "active text-white";
+            break;
+        case "inprocess":
+            inprocess = "active text-white";
+            break;
+        case "completed":
+            completed = "active text-white";
+            break;
+        case "approved":
+            approved = "active text-white";
+            break;
+        default:
+            all = "active text-white";
+            break;
+    }
+
+}
+
+<div class="p-3">
+    <div class="d-flex justify-content-between pt-4">
+        <div class="p-2">
+            <h2 class="text-primary">Project List</h2>
+        </div>
+        <div class="p-2">
+            <ul class="list-group list-group-horizontal-sm">
+                <a style="text-decoration:none;" asp-controller="ManageProject"
+                   asp-action="IndexOpen">
+                <li class="list-group-item @inprocess">In Process</li>
+                </a>
+               @* <a style="text-decoration:none;" asp-controller="Order"
+                   asp-action="Index" asp-route-status="pending">
+                <li class="list-group-item @pending">Payment Pending</li>
+                </a>*@
+                <a style="text-decoration:none;" asp-controller="ManageProject"
+                   asp-action="IndexClosed">
+                <li class="list-group-item @completed">Completed</li>
+                </a>
+                @*                <a style="text-decoration:none;" asp-controller="Order"
+                asp-action="Index" asp-route-status="approved">
+                <li class="list-group-item @approved">Approved</li>
+                </a>*@
+                <a style="text-decoration:none;" asp-controller="ManageProject"
+                   asp-action="Index">
+                <li class="list-group-item @all">All</li>
+                </a>
+            </ul>
+        </div>
+        <div class="text-end">
+            <br />
+            <a asp-controller="ManageProject" asp-action="Create" class="btn btn-secondary" style="width:150px">
+                <i class="bi bi-plus-circle"></i> Create new Manage Project
+            </a>
+            <br />
+        </div>
+    </div>
+    <br /><br />
+
+    <table id="tblData" class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>
+                    Project Name
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Start Date
+                </th>
+                <th>
+                    End Date
+                </th>
+                <th>
+                    Project Manager
+                </th>
+                <th>
+                    Proposal Submission Date
+                </th>
+                <th>
+                    Status
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model)
+            {
+                <tr>
+                    <td width="35%">
+                        <a asp-controller="Project" asp-route-id="@obj.Id" asp-action="Details">@obj.Name</a>
+                    </td>
+                    <td width="35%">
+                        @obj.Description
+
+                    </td>
+                    <td width="35%">
+                        @obj.StartDate
+
+                    </td>
+                    <td width="35%">
+                        @obj.EndDate
+
+                    </td>
+                    <td width="35%">
+                        @obj.ManagerId
+
+                    </td>
+                    <td width="35%">
+                        @obj.SubmissionDate
+
+                    </td>
+                    <td width="35%">
+                        @obj.Status
+
+                    </td>
+                    @*                    <td width="15%">
+                <a asp-controller="ManageProject" asp-action="Edit" class="btn btn-secondary" asp-route-id="@obj.Id" style="width:150px">
+                Edit
+                </a>
+                </td>*@
+                    @* <td width="15%">
+                <a asp-controller="ManageProject" asp-action="Delete" class="btn btn-secondary" style="width:150px" asp-route-id="@obj.Id">
+                Delete
+                </a>
+                </td>*@
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
